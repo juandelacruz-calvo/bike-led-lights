@@ -76,7 +76,7 @@ int pattern = 1;
 
 void cyclePattern()
 {
-    if (pattern >= 3)
+    if (pattern >= 4)
     {
         pattern = 1;
     }
@@ -163,12 +163,20 @@ void pattern1()
 void pattern2()
 {
     digitalWrite(statusLED, LOW);
-    waitAndTick(100);
+    waitAndTick(300);
     digitalWrite(statusLED, HIGH);
     waitAndTick(100);
 }
 
 void pattern3()
+{
+    digitalWrite(statusLED, LOW);
+    waitAndTick(100);
+    digitalWrite(statusLED, HIGH);
+    waitAndTick(100);
+}
+
+void pattern4()
 {
     digitalWrite(statusLED, HIGH);
     waitAndTick(100);
@@ -192,6 +200,10 @@ void loop()
         break;
     case 3:
         pattern3();
+        break;
+        break;
+    case 4:
+        pattern4();
         break;
     default:
         pattern1();
