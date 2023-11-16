@@ -183,7 +183,7 @@ void pattern4()
     waitAndTick(100);
 }
 
-int readVccCounter = 0;
+long readVccCounter = 0;
 
 void loop()
 {
