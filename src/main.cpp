@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#define DEBUG_SERIAL
+// #define DEBUG_SERIAL
 
 #ifdef DEBUG_SERIAL
 #include <SoftwareSerial.h>
@@ -65,10 +65,11 @@ void pressStop()
 {
     digitalWrite(statusLED, LOW);
     delay(250);
+#ifdef DEBUG_SERIAL
     mySerial.println("pressSTop");
 
     mySerial.println("go to sleep");
-
+#endif
     goToSleep();
 }
 
@@ -126,7 +127,7 @@ void setup()
 #endif
     pinMode(statusLED, OUTPUT);
 
-    button.setPressTicks(1000); // that is the time when LongPressStart is called
+    button.setPressTicks(250); // that is the time when LongPressStart is called
     button.attachClick(cyclePattern);
     button.attachLongPressStart(pressStart);
     button.attachLongPressStop(pressStop);
@@ -182,8 +183,11 @@ void pattern4()
     waitAndTick(100);
 }
 
+int readVccCounter = 0;
+
 void loop()
 {
+
 #ifdef DEBUG_SERIAL
     mySerial.print("voltage: ");
     mySerial.println(readVcc());
@@ -207,5 +211,16 @@ void loop()
         break;
     default:
         pattern1();
+    }
+
+    readVccCounter++;
+    if (readVccCounter > 10000)
+    {
+        readVccCounter = 0;
+        if (readVcc() < 3300)
+        {
+            blink(4);
+            goToSleep();
+        }
     }
 }
